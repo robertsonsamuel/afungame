@@ -23,7 +23,8 @@ var scoreText;
 
 function create () {
   enemies = [];
-  socket = io.connect();
+  socket = io.connect("http://localhost:3000");
+
  game.physics.startSystem(Phaser.Physics.ARCADE);
    //add sky
    game.add.sprite(0, 0, 'sky');
@@ -43,6 +44,7 @@ function create () {
 
 
    cursors = game.input.keyboard.createCursorKeys();
+   setEventHandlers();
  }
 
  function update () {
@@ -112,18 +114,19 @@ function onSocketConnected () {
 
 
 function onNewPlayer (data) {
- 
   console.log('New player connected:', data.id)
 
   // Add new player to the remote players array
   enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y))
+  console.log(enemies);
 }
 
 
 
 function onMovePlayer (data) {
+
   var movePlayer = playerById(data.id)
-  console.log(data);
+
   // Player not found
   if (!movePlayer) {
     console.log('Player not found: ', data.id)
