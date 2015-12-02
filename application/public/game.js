@@ -24,7 +24,7 @@ var scoreText;
 function create () {
   enemies = [];
   socket = io.connect();
- game.physics.startSystem(Phaser.Physics.ARCADE);
+  game.physics.startSystem(Phaser.Physics.ARCADE);
    //add sky
    game.add.sprite(0, 0, 'sky');
    platforms = game.add.group();
