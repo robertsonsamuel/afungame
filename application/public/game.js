@@ -100,6 +100,8 @@ var setEventHandlers = function  () {
   socket.on('connect', onSocketConnected);
   socket.on('new player', onNewPlayer);
   socket.on('move player', onMovePlayer);
+  socket.on('remove player', onRemovePlayer);
+  socket.on('disconnect', onSocketDisconnect);
 }
 
 function onSocketConnected () {
@@ -110,7 +112,9 @@ function onSocketConnected () {
 }
 
 
-
+function onSocketDisconnect () {
+  console.log('Disconnected from socket server')
+}
 
 
 function onNewPlayer (data) {
@@ -121,7 +125,20 @@ function onNewPlayer (data) {
   console.log(enemies);
 }
 
+function onRemovePlayer (data) {
+  var removePlayer = playerById(data.id)
 
+  // Player not found
+  if (!removePlayer) {
+    console.log('Player not found: ', data.id)
+    return
+  }
+
+  removePlayer.player.kill()
+
+  // Remove player from array
+  enemies.splice(enemies.indexOf(removePlayer), 1)
+}
 
 function onMovePlayer (data) {
 
