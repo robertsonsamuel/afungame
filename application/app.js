@@ -62,6 +62,24 @@ function onSocketConnection (client) {
 
   // Listen for move player message
   client.on('move player', onMovePlayer)
+
+  client.on('disconnect', onClientDisconnect)
+
+  // client.on('remove player', onRemovePlayer)
+}
+
+function onClientDisconnect(){
+  console.log('player is disconnected', this.id);
+  var removePlayer = playerById(this.id);
+
+  if (!removePlayer) {
+    console.log('player not found' + this.id);
+    return;
+  }
+
+  players.splice(players.indexOf(removePlayer), 1);
+
+  this.broadcast.emit('remove player', { id: this.id});
 }
 
 
@@ -95,7 +113,7 @@ function onNewPlayer (data) {
 
 // Player has moved
 function onMovePlayer (data) {
-  console.log(data);
+  // console.log(data);
   // Find player in array
   var movePlayer = playerById(this.id)
   // Player not found

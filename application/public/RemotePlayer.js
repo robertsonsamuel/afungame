@@ -1,28 +1,31 @@
 /* global game */
 
 var RemotePlayer = function (index, game, player, startX, startY) {
-  var x = startX
-  var y = startY
+  var x = startX;
+  var y = startY;
 
   this.game = game
   this.health = 3
   this.player = player
   this.alive = true
-  console.log(this.player);
+  //console.log(this.player);
   this.player = game.add.sprite(x, y, 'dude')
-
   // this.player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
   // this.player.animations.add('stop', [3], 20, true)
 
   this.player.anchor.setTo(0.5, 0.5)
-
+ 
+  console.log('player:', player);
   this.player.name = index.toString()
-  this.player.collideWorldBounds = true
-  this.player.bounce.y = 0.2;
-  this.player.gravity.y = 300;
-  
+  //this.player.collideWorldBounds = true
+  //this.player.bounce[y] = 0.2;
+  this.player.body = {};
+  this.player.body.gravity = {}
+  this.player.body.gravity.y = 300;
+   console.log('thisplayer:', this.player);
 
   this.lastPosition = { x: x, y: y }
+  
 }
 
 RemotePlayer.prototype.update = function () {

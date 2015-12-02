@@ -48,6 +48,13 @@ function create () {
  }
 
  function update () {
+  // console.log('enemies:', enemies);
+  // for (var i = 0; i < enemies.length; i++) {
+  //   if (enemies[i].alive) {
+  //     enemies[i].update()
+  //     game.physics.collide(player, enemies[i].player)
+  //   }
+  // }
   game.physics.arcade.collide(player, platforms);
   player.body.velocity.x = 0;
   socket.emit('move player', { x: player.body.x, y: player.body.y })
@@ -126,12 +133,13 @@ function onNewPlayer (data) {
 }
 
 function onRemovePlayer (data) {
-  var removePlayer = playerById(data.id)
+  var removePlayer = playerById(data.id);
+  console.log('removePlayer:', removePlayer);
 
   // Player not found
   if (!removePlayer) {
     console.log('Player not found: ', data.id)
-    return
+    return;
   }
 
   removePlayer.player.kill()
