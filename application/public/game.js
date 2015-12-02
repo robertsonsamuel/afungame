@@ -92,18 +92,6 @@ function create () {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 var setEventHandlers = function  () {
    // Socket connection successful
   socket.on('connect', onSocketConnected);
