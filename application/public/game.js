@@ -7,7 +7,7 @@ function preload() {
   game.load.image('ground', 'assets/platform.png');
   game.load.image('star', 'assets/star.png');
   game.load.spritesheet('dude', './assets/dude.png', 32, 48);
-  game.load.spritesheet('player2', 'assets/dude.png', 32, 48);
+  
 
 }
 
@@ -42,6 +42,8 @@ function create () {
    player.body.gravity.y = 300;
    player.body.collideWorldBounds = true;
 
+  player.animations.add('left', [0, 1, 2, 3], 10, true);
+  player.animations.add('right', [5, 6, 7, 8], 10, true);
 
    cursors = game.input.keyboard.createCursorKeys();
    setEventHandlers();
@@ -128,8 +130,8 @@ function onNewPlayer (data) {
   console.log('New player connected:', data.id)
 
   // Add new player to the remote players array
-  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y))
-  console.log(enemies);
+  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y)) 
+  //console.log('enimies:',enemies);
 }
 
 function onRemovePlayer (data) {
