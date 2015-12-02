@@ -23,8 +23,9 @@ var scoreText;
 
 function create () {
   enemies = [];
-  socket = io.connect();
-  game.physics.startSystem(Phaser.Physics.ARCADE);
+  socket = io.connect("http://localhost:3000");
+
+ game.physics.startSystem(Phaser.Physics.ARCADE);
    //add sky
    game.add.sprite(0, 0, 'sky');
    platforms = game.add.group();
@@ -43,6 +44,7 @@ function create () {
 
 
    cursors = game.input.keyboard.createCursorKeys();
+   setEventHandlers();
  }
 
  function update () {
@@ -98,6 +100,8 @@ var setEventHandlers = function  () {
   socket.on('connect', onSocketConnected);
   socket.on('new player', onNewPlayer);
   socket.on('move player', onMovePlayer);
+  socket.on('remove player', onRemovePlayer);
+  socket.on('disconnect', onSocketDisconnect);
 }
 
 function onSocketConnected () {
@@ -108,22 +112,38 @@ function onSocketConnected () {
 }
 
 
-
+function onSocketDisconnect () {
+  console.log('Disconnected from socket server')
+}
 
 
 function onNewPlayer (data) {
- 
   console.log('New player connected:', data.id)
 
   // Add new player to the remote players array
   enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y))
+  console.log(enemies);
 }
 
+function onRemovePlayer (data) {
+  var removePlayer = playerById(data.id)
 
+  // Player not found
+  if (!removePlayer) {
+    console.log('Player not found: ', data.id)
+    return
+  }
+
+  removePlayer.player.kill()
+
+  // Remove player from array
+  enemies.splice(enemies.indexOf(removePlayer), 1)
+}
 
 function onMovePlayer (data) {
+
   var movePlayer = playerById(data.id)
-  console.log(data);
+
   // Player not found
   if (!movePlayer) {
     console.log('Player not found: ', data.id)

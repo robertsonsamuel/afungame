@@ -8,7 +8,7 @@ var RemotePlayer = function (index, game, player, startX, startY) {
   this.health = 3
   this.player = player
   this.alive = true
-
+  console.log(this.player);
   this.player = game.add.sprite(x, y, 'dude')
 
   // this.player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
@@ -17,10 +17,9 @@ var RemotePlayer = function (index, game, player, startX, startY) {
   this.player.anchor.setTo(0.5, 0.5)
 
   this.player.name = index.toString()
-  this.player.body.immovable = true
-  this.player.body.collideWorldBounds = true
-  this.player.body.bounce.y = 0.2;
-  this.player.body.gravity.y = 300;
+  this.player.collideWorldBounds = true
+  this.player.bounce.y = 0.2;
+  this.player.gravity.y = 300;
   
 
   this.lastPosition = { x: x, y: y }

@@ -70,9 +70,10 @@ function onSocketConnection (client) {
 
 
 function onNewPlayer (data) {
+
   // Create a new player
   var newPlayer = new Player(data.x, data.y)
-  console.log(newPlayer);
+  
   newPlayer.id = this.id
 
   // Broadcast new player to connected socket clients
@@ -88,12 +89,13 @@ function onNewPlayer (data) {
   // Add new player to the players array
   players.push(newPlayer)
 
+
 }
 
 
 // Player has moved
 function onMovePlayer (data) {
-  console.log(this.id);
+  console.log(data);
   // Find player in array
   var movePlayer = playerById(this.id)
   // Player not found
@@ -109,12 +111,6 @@ function onMovePlayer (data) {
   // Broadcast updated position to connected socket clients
   this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()})
 }
-
-
-
-
-
-
 
 
 
