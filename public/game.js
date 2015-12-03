@@ -7,6 +7,7 @@ function preload() {
   game.load.image('ground', 'assets/platform2.png');
   game.load.image('platform', 'assets/platform.png');
   game.load.image('star', 'assets/star.png');
+  game.load.image('diamond', 'assets/diamond.png');
   game.load.image('bullet', 'assets/bullet.png');
   game.load.spritesheet('dude', './assets/dude.png', 32, 48);
   
@@ -19,6 +20,7 @@ var platforms;
 var cursors;
 var enemies;
 var stars;
+var diamonds;
 var score = 0;
 var scoreText;
 
@@ -45,26 +47,54 @@ function create () {
 
 
    var plat1= platforms.create(200, 600,'platform');
+   plat1.scale.setTo(3,2)
    plat1.body.immovable = true;
 
    var plat2= platforms.create(100, 500,'platform');
+   plat2.scale.setTo(3,1)
    plat2.body.immovable = true;  
 
-   var plat3= platforms.create(500, 450);
+   var plat3= platforms.create(500, 450,'platform');
    plat3.scale.setTo(2,2)
    plat3.body.immovable = true;
 
-   var plat4= platforms.create(500, 300);
+   var plat4= platforms.create(500, 300, 'platform');
    plat4.body.immovable = true;
 
-   var plat5= platforms.create(200, 100);
-   plat5.scale.setTo(4,2)
+   var plat5= platforms.create(200, 100, 'platform');
    plat5.body.immovable = true;
+
+   var plat6= platforms.create(350, 225, 'platform');
+   plat6.body.immovable = true;
+
+   var plat7= platforms.create(150, 300,'platform');
+   plat7.body.immovable = true;   
+
+   var plat8= platforms.create(250, 425,'platform');
+   plat8.scale.setTo(2,1)
+   plat8.body.immovable = true;
+
+   var plat9= platforms.create(650, 650,'platform');
+   plat9.body.immovable = true;
+
+   var plat10= platforms.create(650, 200,'platform');
+   plat10.body.immovable = true;
+
 
 
    stars = game.add.group();
    stars.enableBody = true;
-   var star = stars.create(200, 50, 'star');
+   var star = stars.create(200, 00, 'star');
+
+   star.body.bounce.y = 0.7 + Math.random() * 0.2;
+   star.body.gravity.y = 300;
+
+   diamonds = game.add.group();
+   diamonds.enableBody = true;
+   var diamond = diamonds.create(650, 50, 'diamond');
+
+   diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
+   diamond.body.gravity.y = 300;
 
    star.body.bounce.y = 0.7 + Math.random() * 0.2;
    star.body.gravity.y = 300;
@@ -121,6 +151,8 @@ function create () {
   game.physics.arcade.collide(player, platforms);
   game.physics.arcade.collide(stars, platforms);
   game.physics.arcade.overlap(player, stars, collectStar, null, this);
+  game.physics.arcade.collide(diamonds, platforms);
+  game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
   
   player.body.velocity.x = 0;
   socket.emit('move player', { x: player.body.x, y: player.body.y });
@@ -172,6 +204,12 @@ function create () {
 
     function collectStar (player, star) {
       star.kill();
+      socket.emit('playerwon');  
+
+    }
+
+    function collectDiamond (player, diamond) {
+      diamond.kill();
       socket.emit('playerwon');  
 
     }
@@ -252,8 +290,8 @@ function onMoveStar (data) {
 
 
 function gameover (data) {
-  alert('Game over');
-  console.log('game is over', data);  
+  alert('Item Collected!');
+  console.log('Item Collected', data);  
 }
 
 
