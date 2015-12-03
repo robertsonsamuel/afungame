@@ -65,6 +65,8 @@ function onSocketConnection (client) {
 
   client.on('disconnect', onClientDisconnect)
 
+  client.on('kill star', onKillstar)
+
   // client.on('remove player', onRemovePlayer)
 }
 
@@ -113,7 +115,7 @@ function onNewPlayer (data) {
 
 // Player has moved
 function onMovePlayer (data) {
-  // console.log(data);
+
   // Find player in array
   var movePlayer = playerById(this.id)
   // Player not found
@@ -128,6 +130,11 @@ function onMovePlayer (data) {
 
   // Broadcast updated position to connected socket clients
   this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()})
+}
+
+function onKillstar (data) {
+  this.emit('starKilled');
+  
 }
 
 
